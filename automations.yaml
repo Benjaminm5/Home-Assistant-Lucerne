@@ -1,0 +1,80 @@
+- id: motion_detected_zimmer
+  alias: Motion Detected Zimmer
+  trigger:
+  - platform: webhook
+    webhook_id: motion_detected_zimmer
+  condition:
+  - condition: state
+    entity_id: device_tracker.curiosity_ii
+    state: not_home
+  action:
+  - data:
+      data:
+        attachment:
+          content-type: jpg
+          hide-thumbnail: false
+          url: http://192.168.1.127/picture/1/current/
+      message: Motion Detected in your Room
+      title: ALERT
+    service: notify.ios_curiosity_ii
+  hide_entity: false
+- id: enable_zigbee_join
+  alias: Enable Zigbee joining
+  hide_entity: true
+  trigger:
+    platform: state
+    entity_id: input_boolean.zigbee_permit_join
+    to: 'on'
+  action:
+  - service: mqtt.publish
+    data:
+      topic: zigbee2mqtt/bridge/config/permit_join
+      payload: 'true'
+  - service: timer.start
+    data:
+      entity_id: timer.zigbee_permit_join
+- id: disable_zigbee_join
+  alias: Disable Zigbee joining
+  trigger:
+  - entity_id: input_boolean.zigbee_permit_join
+    platform: state
+    to: 'off'
+  action:
+  - data:
+      payload: 'false'
+      topic: zigbee2mqtt/bridge/config/permit_join
+    service: mqtt.publish
+  - data:
+      entity_id: timer.zigbee_permit_join
+    service: timer.cancel
+  hide_entity: true
+- id: disable_zigbee_join_timer
+  alias: Disable Zigbee joining by timer
+  hide_entity: true
+  trigger:
+  - platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.zigbee_permit_join
+  action:
+  - service: mqtt.publish
+    data:
+      topic: zigbee2mqtt/bridge/config/permit_join
+      payload: 'false'
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.zigbee_permit_join
+- id: '1554325357780'
+  alias: Migros Notification
+  trigger:
+  - at: '18:15'
+    platform: time
+  condition:
+  - condition: state
+    entity_id: device_tracker.curiosity_ii
+    state: home
+  action:
+  - data:
+      message: MIGROS schliesst in 15 Minuten
+      title: Verpflegung (Vorsorge)
+    service: notify.ios_curiosity_ii

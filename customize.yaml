@@ -1,0 +1,14 @@
+light.tisch:
+  icon: mdi:desktop-mac
+light.bett:
+  icon: mdi:hotel
+light.pult:
+  icon: mdi:seat
+light.regal:
+  icon: mdi:tshirt-crew
+device_tracker.phone_mischa:
+  friendly_name: Mischa
+device_tracker.curiosity_ii:
+  friendly_name: Benjamin
+device_tracker.phone_luca:
+  friendly_name: Luca

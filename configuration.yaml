@@ -1,0 +1,142 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: 47.0333
+  longitude: 8.5834
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 0
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: Europe/Zurich
+  # Customization file
+  customize: !include customize.yaml
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+ios:
+
+stream:
+
+apple_tv:
+  - host: 192.168.1.102
+    login_id: 00000000-1084-ab63-82eb-3ec2ea3c4777
+    name: Apple TV
+
+discovery:
+
+device_tracker:
+  - platform: swisscom
+
+camera: !include cameras.yaml
+
+frontend:
+  themes:
+    camera:
+    
+# Main colors that can be changed
+      dark-primary-color: "#c66900"
+      disabled-text-color: "#545454"
+      divider-color: "rgba(255, 255, 255, 0.12)"
+      light-primary-color: "#e06c6c"
+      paper-card-background-color: "#1d1d1d"
+      paper-grey-200: "#191919"
+      paper-item-icon-color: "#d3d3d3"
+      paper-listbox-background-color: "#202020"
+      primary-background-color: "#303030"
+      primary-color: "#d32f2f"
+      primary-text-color: "#cfcfcf"
+      secondary-background-color: "#131313"
+      sidebar-text_-_background: "#62717b" 
+# Colors based on variables, see above
+      paper-card-header-color: "var(--paper-item-icon-color)" 
+      paper-item-icon-active-color: "var(--primary-color)"
+      paper-item-icon_-_color: "var(--primary-text-color)"
+      paper-listbox-color: "var(--primary-text-color)"
+      paper-grey-50: "var(--primary-text-color)"
+      paper-slider-active-color: "var(--primary-color)"
+      paper-slider-knob-color: "var(--primary-color)"
+      paper-slider-knob-start-color: "var(--primary-color)"
+      paper-slider-pin-color: "var(--primary-color)"
+      paper-slider-secondary-color: "var(--light-primary-color)"
+      paper-toggle-button-checked-ink-color: "var(--dark-primary-color)"
+      paper-toggle-button-checked-button-color: "var(--primary-color)"
+      paper-toggle-button-checked-bar-color: "var(--light-primary-color)"
+      paper-toggle-button-unchecked-bar-color: "var(--primary-text-color)"
+      secondary-text-color: "var(--primary-color)"
+      table-row-background-color: "var(--paper-card-background-color)"
+      table-row-alternative-background-color: "var(--sidebar-text_-_background)"
+
+
+#hassio:
+
+#config:
+
+#history:
+
+#recorder:
+
+#logbook:
+
+#system_health:
+
+#Configurator in side bar
+panel_iframe:
+  configurator:
+    title: Configurator
+    icon: mdi:wrench
+    url: http://hassio.local:3218
+  motioneye:
+    title: motionEye
+    icon: mdi:cctv
+    url: http://192.168.1.100:8765
+  esphome:
+    title: ESPHome
+    icon: mdi:chip
+    url: http://192.168.1.100:6052
+    
+#MQTT
+mqtt:
+  broker: core-mosquitto
+  username: mqtt-user
+  password: mqtt-user
+
+# Show the introduction message on startup.
+# introduction:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
+
+# Sensors
+# sensor:
+#  # Weather prediction
+#  - platform: yr
+
+# Text to speech
+tts:
+  - platform: google
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+
+#Zigbee2mqtt
+input_boolean:
+  zigbee_permit_join:
+    name: Allow devices to join
+    initial: off
+    icon: mdi:cellphone-wireless
+
+timer:
+  zigbee_permit_join:
+    name: Time remaining
+    duration: 600 # Updated this to the number of seconds you wish
+
+sensor:
+  - platform: mqtt
+    name: Bridge state
+    state_topic: "zigbee2mqtt/bridge/state"
+    icon: mdi:router-wireless

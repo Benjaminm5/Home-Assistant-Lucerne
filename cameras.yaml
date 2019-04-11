@@ -1,0 +1,4 @@
+- platform: generic 
+  still_image_url: http://192.168.1.127/picture/1/current/
+  name: Internal House 
+  scan_interval: 60
